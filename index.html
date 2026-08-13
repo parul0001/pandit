@@ -358,8 +358,11 @@
     .footer-col ul li a:hover { color: var(--gold); }
     .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-3); }
 
+    .mobile-nav-cta { display: none; }
+
     /* MOBILE */
     @media (max-width: 900px) {
+      .btn-book { display: none; } /* Hide from top header on mobile to keep navbar ultra-clean */
       .hero { grid-template-columns: 1fr; gap: 60px; }
       .hero-visual { order: -1; }
       .hero-mandala { width: 260px; }
@@ -383,12 +386,12 @@
     
     @media (max-width: 600px) {
       :root { --nav-h: 62px; }
+      nav { padding: 0 16px; }
       .nav-brand { gap: 10px; }
-      .brand-emblem { width: 36px; height: 36px; }
-      .emblem-om { font-size: 18px; }
-      .brand-title { font-size: 19px; letter-spacing: 0.03em; }
-      .btn-book { padding: 7px 12px; font-size: 12px; }
-      .hero { padding-top: calc(var(--nav-h) + 30px); }
+      .brand-emblem { width: 34px; height: 34px; }
+      .emblem-om { font-size: 17px; }
+      .brand-title { font-size: 18px; letter-spacing: 0.03em; }
+      .hero { padding-top: calc(var(--nav-h) + 24px); }
       .hero-actions { flex-direction: column; }
       .hero-stats { grid-template-columns: repeat(2,1fr); gap: 20px; }
       .form-row { grid-template-columns: 1fr; }
@@ -405,7 +408,7 @@
       background: rgba(12,9,6,0.98);
       backdrop-filter: blur(24px) saturate(180%);
       -webkit-backdrop-filter: blur(24px) saturate(180%);
-      padding: 20px clamp(16px, 5vw, 30px) 28px;
+      padding: 16px 20px 24px;
       border-bottom: 1px solid var(--border-2);
       gap: 6px;
       box-shadow: 0 24px 60px rgba(0,0,0,0.85);
@@ -432,6 +435,18 @@
       border-color: var(--border-2);
       color: var(--gold-2);
     }
+    .nav-open .mobile-nav-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .nav-open .mobile-nav-cta a {
+      justify-content: center;
+      border: none;
+    }
     .nav-open .nav-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
     .nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
     .nav-open .nav-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
@@ -452,6 +467,10 @@
     <li><a onclick="navigate('services')" data-page="services">Services</a></li>
     <li><a onclick="navigate('about')" data-page="about">About</a></li>
     <li><a onclick="navigate('contact')" data-page="contact">Contact</a></li>
+    <li class="mobile-nav-cta">
+      <a href="tel:8580505554" class="btn-primary" style="padding:12px; font-size:14px;">📞 Call 85805 05554</a>
+      <a href="https://wa.me/918580505554" target="_blank" class="btn-whatsapp" style="padding:12px; font-size:14px;">💬 Chat on WhatsApp</a>
+    </li>
   </ul>
 
   <div class="nav-actions">
