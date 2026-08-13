@@ -68,72 +68,54 @@
     .nav-brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 13px;
       text-decoration: none;
       cursor: pointer;
-      flex-shrink: 1;
-      min-width: 0;
+      transition: transform var(--transition);
+    }
+    .nav-brand:hover {
+      transform: translateY(-1px);
     }
     
     /* Luxury Sacred Emblem */
     .brand-emblem {
       position: relative;
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #2d2216 0%, #140e09 100%);
-      border: 1.5px solid rgba(232,160,32,0.45);
+      background: radial-gradient(circle at 32% 32%, #382a19 0%, #150f09 100%);
+      border: 1.5px solid rgba(245,188,69,0.5);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 16px rgba(232,160,32,0.22), inset 0 1px 2px rgba(255,220,130,0.35);
+      box-shadow: 0 0 20px rgba(232,160,32,0.28), inset 0 1px 2px rgba(255,225,140,0.4);
       flex-shrink: 0;
-      transition: transform var(--transition), border-color var(--transition);
+      transition: all var(--transition);
     }
     .nav-brand:hover .brand-emblem {
-      transform: scale(1.05);
       border-color: var(--gold-2);
-      box-shadow: 0 0 24px rgba(232,160,32,0.4), inset 0 1px 2px rgba(255,220,130,0.5);
+      box-shadow: 0 0 28px rgba(232,160,32,0.5), inset 0 1px 3px rgba(255,235,160,0.6);
+      transform: rotate(6deg) scale(1.04);
     }
     .emblem-om {
-      font-size: 20px;
+      font-size: 22px;
       color: var(--gold-2);
       line-height: 1;
-      text-shadow: 0 0 10px rgba(232,160,32,0.7);
+      text-shadow: 0 0 12px rgba(232,160,32,0.85);
     }
 
-    .nav-brand .brand-text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1.2;
-      min-width: 0;
-    }
-    .nav-brand .brand-name {
+    .brand-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 18px;
+      font-size: 23px;
       font-weight: 600;
-      color: var(--cream);
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
+      background: linear-gradient(135deg, #ffffff 15%, #fcedd8 55%, #e8a020 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 20px rgba(232,160,32,0.2);
       white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .nav-brand .brand-sub {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 10px;
-      color: var(--text-2);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-    .nav-brand .sub-dot {
-      width: 4px;
-      height: 4px;
-      background: var(--gold);
-      border-radius: 50%;
       display: inline-block;
+      line-height: 1;
     }
     
     .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
@@ -402,10 +384,9 @@
     @media (max-width: 600px) {
       :root { --nav-h: 62px; }
       .nav-brand { gap: 10px; }
-      .brand-emblem { width: 34px; height: 34px; }
-      .emblem-om { font-size: 17px; }
-      .nav-brand .brand-name { font-size: 16px; }
-      .nav-brand .sub-state { display: none; }
+      .brand-emblem { width: 36px; height: 36px; }
+      .emblem-om { font-size: 18px; }
+      .brand-title { font-size: 19px; letter-spacing: 0.03em; }
       .btn-book { padding: 7px 12px; font-size: 12px; }
       .hero { padding-top: calc(var(--nav-h) + 30px); }
       .hero-actions { flex-direction: column; }
@@ -463,14 +444,7 @@
     <div class="brand-emblem">
       <span class="emblem-om">ॐ</span>
     </div>
-    <div class="brand-text">
-      <span class="brand-name">Pandit Parul</span>
-      <span class="brand-sub">
-        <span class="sub-dot"></span>
-        <span>Ghumarwin</span>
-        <span class="sub-state">· Himachal Pradesh</span>
-      </span>
-    </div>
+    <span class="brand-title">Pandit Parul</span>
   </a>
 
   <ul class="nav-links" id="nav-links">
