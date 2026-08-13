@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pandit Parul — Vedic Puja &amp; Havan in Ghumarwin</title>
+  <meta name="description" content="Book Pandit Parul for Griha Pravesh, Satyanarayan Katha, weddings, havan and kundli guidance in Ghumarwin, Himachal Pradesh." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0806;
+      --bg-2: #110e09;
+      --bg-3: #1a1410;
+      --surface: #1e1810;
+      --surface-2: #261f13;
+      --border: rgba(255,200,80,0.12);
+      --border-2: rgba(255,200,80,0.22);
+      --gold: #e8a020;
+      --gold-2: #f5bc45;
+      --gold-dim: rgba(232,160,32,0.15);
+      --saffron: #d4600a;
+      --cream: #f5ede0;
+      --text: #e8ddd0;
+      --text-2: #a8998a;
+      --text-3: #6a5e52;
+      --radius: 14px;
+      --radius-sm: 8px;
+      --nav-h: 68px;
+      --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.5;
+    }
+    .page { display: none; }
+    .page.active { display: block; animation: fadeUp 0.5s ease both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px, 5vw, 60px);
+      background: rgba(10,8,6,0.85);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; cursor: pointer; }
+    .nav-brand .om { font-size: 22px; color: var(--gold); line-height: 1; text-shadow: 0 0 20px rgba(232,160,32,0.6); }
+    .nav-brand .brand-text { display: flex; flex-direction: column; line-height: 1.2; }
+    .nav-brand .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 500; color: var(--cream); letter-spacing: 0.03em; }
+    .nav-brand .brand-sub { font-size: 10px; color: var(--text-2); letter-spacing: 0.12em; text-transform: uppercase; }
+    .nav-links { display: flex; align-items: center; gap: 2px; list-style: none; }
+    .nav-links a { display: block; padding: 7px 14px; font-size: 13px; color: var(--text-2); text-decoration: none; letter-spacing: 0.04em; border-radius: 8px; transition: color var(--transition), background var(--transition); cursor: pointer; }
+    .nav-links a:hover, .nav-links a.active { color: var(--cream); background: rgba(255,255,255,0.06); }
+    .nav-links a.active { color: var(--gold); }
+    .btn-book { display: inline-flex; align-items: center; gap: 8px; padding: 9px 20px; background: linear-gradient(135deg, var(--gold), var(--saffron)); color: #0a0806; font-size: 13px; font-weight: 600; border-radius: 100px; text-decoration: none; letter-spacing: 0.04em; transition: all var(--transition); box-shadow: 0 4px 20px rgba(232,160,32,0.3); white-space: nowrap; }
+    .btn-book:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 8px 30px rgba(232,160,32,0.4); }
+    .nav-toggle { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .nav-toggle span { display: block; width: 22px; height: 1.5px; background: var(--text); border-radius: 2px; transition: var(--transition); }
+
+    /* REVEAL */
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* UTILITY */
+    .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border-2), transparent); margin: 0 clamp(20px, 8vw, 120px); }
+    .section-label { display: inline-flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .section-label::before { content: ''; display: block; width: 28px; height: 1px; background: var(--gold); }
+    .btn-primary { display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; background: linear-gradient(135deg, var(--gold), var(--saffron)); color: #0a0806; font-size: 14px; font-weight: 600; border-radius: 100px; text-decoration: none; letter-spacing: 0.04em; transition: all var(--transition); box-shadow: 0 4px 24px rgba(232,160,32,0.35); border: none; cursor: pointer; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(232,160,32,0.45); }
+    .btn-ghost { display: inline-flex; align-items: center; gap: 10px; padding: 13px 27px; border: 1px solid var(--border-2); color: var(--text); font-size: 14px; border-radius: 100px; text-decoration: none; letter-spacing: 0.04em; transition: all var(--transition); cursor: pointer; background: none; }
+    .btn-ghost:hover { background: var(--gold-dim); border-color: var(--gold); color: var(--gold); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 60px;
+      padding: calc(var(--nav-h) + 60px) clamp(20px, 8vw, 120px) 100px;
+      position: relative; overflow: hidden;
+    }
+    .hero::before { content: ''; position: absolute; top: -200px; right: -100px; width: 700px; height: 700px; background: radial-gradient(ellipse, rgba(232,160,32,0.08) 0%, transparent 70%); pointer-events: none; }
+    .hero::after { content: ''; position: absolute; bottom: -200px; left: -100px; width: 500px; height: 500px; background: radial-gradient(ellipse, rgba(212,96,10,0.06) 0%, transparent 70%); pointer-events: none; }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; background: var(--gold-dim); border: 1px solid var(--border-2); padding: 6px 14px; border-radius: 100px; font-size: 12px; color: var(--gold-2); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 28px; }
+    .hero-eyebrow .dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(0.8); } }
+    .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(40px, 6vw, 76px); font-weight: 300; line-height: 1.1; color: var(--cream); letter-spacing: -0.01em; margin-bottom: 24px; }
+    .hero-title em { font-style: italic; color: var(--gold-2); }
+    .hero-desc { font-size: clamp(15px, 1.8vw, 17px); line-height: 1.8; color: var(--text-2); max-width: 500px; margin-bottom: 40px; }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 60px; }
+    .hero-stats { display: grid; grid-template-columns: repeat(4, auto); gap: 32px; padding-top: 40px; border-top: 1px solid var(--border); }
+    .stat-value { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 500; color: var(--gold-2); line-height: 1; margin-bottom: 4px; }
+    .stat-label { font-size: 11px; color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* MANDALA */
+    .hero-visual { position: relative; z-index: 1; display: flex; justify-content: center; align-items: center; }
+    .hero-mandala { position: relative; width: clamp(280px, 40vw, 480px); aspect-ratio: 1; display: flex; align-items: center; justify-content: center; }
+    .mandala-ring { position: absolute; border-radius: 50%; border: 1px solid; animation: spin linear infinite; }
+    .mandala-ring:nth-child(1) { inset: 0; border-color: rgba(232,160,32,0.18); animation-duration: 40s; }
+    .mandala-ring:nth-child(2) { inset: 12%; border-color: rgba(232,160,32,0.12); animation-duration: 28s; animation-direction: reverse; }
+    .mandala-ring:nth-child(3) { inset: 24%; border-color: rgba(212,96,10,0.2); animation-duration: 18s; }
+    .mandala-ring:nth-child(4) { inset: 36%; border-color: rgba(232,160,32,0.15); animation-duration: 12s; animation-direction: reverse; }
+    .mandala-ring::before { content: ''; position: absolute; top: -3px; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; background: var(--gold); border-radius: 50%; opacity: 0.7; }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .mandala-center { position: relative; z-index: 2; width: 160px; height: 160px; background: radial-gradient(ellipse at 40% 40%, var(--surface-2), var(--bg)); border: 1px solid var(--border-2); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 0 60px rgba(232,160,32,0.12), inset 0 1px 0 rgba(255,200,80,0.15); }
+    .mandala-om { font-size: 48px; color: var(--gold); text-shadow: 0 0 30px rgba(232,160,32,0.7); line-height: 1; }
+    .mandala-label { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-3); }
+    .float-card { position: absolute; background: rgba(30,24,16,0.9); border: 1px solid var(--border-2); backdrop-filter: blur(12px); border-radius: var(--radius); padding: 12px 16px; font-size: 12px; white-space: nowrap; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+    .float-card .fc-label { color: var(--text-3); margin-bottom: 3px; }
+    .float-card .fc-value { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--gold-2); font-weight: 500; }
+    .float-card-1 { top: 8%; right: -4%; animation: float1 6s ease-in-out infinite; }
+    .float-card-2 { bottom: 14%; left: -8%; animation: float2 7s ease-in-out infinite; }
+    .float-card-3 { top: 54%; right: -10%; animation: float1 5.5s ease-in-out infinite 1s; }
+    @keyframes float1 { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes float2 { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+    /* SERVICES STRIP */
+    .services-strip { background: var(--bg-2); padding: 100px clamp(20px, 8vw, 120px); }
+    .strip-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 56px; gap: 24px; }
+    .strip-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 5vw, 56px); font-weight: 300; color: var(--cream); line-height: 1.1; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2px; }
+    .service-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; cursor: pointer; transition: all var(--transition); position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 12px; }
+    .service-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--gold-dim) 0%, transparent 60%); opacity: 0; transition: opacity var(--transition); }
+    .service-card:hover { border-color: var(--border-2); transform: translateY(-3px); box-shadow: 0 16px 48px rgba(0,0,0,0.5); }
+    .service-card:hover::before { opacity: 1; }
+    .sc-num { font-size: 10px; font-weight: 500; color: var(--gold); letter-spacing: 0.15em; opacity: 0.7; }
+    .sc-hindi { font-size: 15px; color: var(--text-2); margin-bottom: 2px; }
+    .sc-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; color: var(--cream); }
+    .sc-desc { font-size: 13px; line-height: 1.7; color: var(--text-2); flex: 1; }
+    .sc-duration { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-3); padding-top: 8px; border-top: 1px solid var(--border); }
+    .sc-duration::before { content: '◷'; color: var(--gold); opacity: 0.6; }
+
+    /* QUOTE */
+    .quote-band { padding: 80px clamp(20px, 8vw, 120px); text-align: center; position: relative; overflow: hidden; }
+    .quote-band::before { content: '"'; position: absolute; top: -40px; left: 50%; transform: translateX(-50%); font-family: 'Cormorant Garamond', serif; font-size: 280px; color: rgba(232,160,32,0.04); line-height: 1; pointer-events: none; }
+    .quote-sanskrit { font-family: 'Cormorant Garamond', serif; font-size: clamp(18px, 3vw, 28px); font-style: italic; color: var(--gold-2); margin-bottom: 12px; }
+    .quote-translation { font-size: 14px; color: var(--text-3); letter-spacing: 0.04em; }
+
+    /* MISSION */
+    .mission { padding: 100px clamp(20px, 8vw, 120px); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 100px); align-items: center; }
+    .mission-img-wrap { aspect-ratio: 4/5; border-radius: 20px; overflow: hidden; background: linear-gradient(135deg, var(--surface-2) 0%, var(--bg-3) 100%); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; position: relative; }
+    .mission-img-om { font-size: 100px; color: var(--gold); opacity: 0.15; display: block; text-align: center; }
+    .mission-badge { position: absolute; bottom: 24px; right: 24px; background: rgba(10,8,6,0.9); border: 1px solid var(--border-2); backdrop-filter: blur(12px); border-radius: var(--radius); padding: 16px 20px; }
+    .badge-num { font-family: 'Cormorant Garamond', serif; font-size: 36px; color: var(--gold-2); font-weight: 500; line-height: 1; }
+    .badge-label { font-size: 11px; color: var(--text-3); letter-spacing: 0.06em; margin-top: 4px; }
+    .mission-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 4vw, 50px); font-weight: 300; color: var(--cream); line-height: 1.15; margin-bottom: 20px; }
+    .mission-body { font-size: 15px; line-height: 1.85; color: var(--text-2); margin-bottom: 36px; }
+
+    /* CTA BAND */
+    .cta-band { padding: 100px clamp(20px, 8vw, 120px); text-align: center; background: var(--bg-2); position: relative; overflow: hidden; }
+    .cta-band::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 300px; background: radial-gradient(ellipse, rgba(232,160,32,0.07) 0%, transparent 70%); pointer-events: none; }
+    .cta-band h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 5vw, 56px); font-weight: 300; color: var(--cream); max-width: 600px; margin: 0 auto 36px; line-height: 1.2; }
+    .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* PAGE HERO */
+    .page-hero { padding: calc(var(--nav-h) + 80px) clamp(20px, 8vw, 120px) 80px; background: var(--bg-2); border-bottom: 1px solid var(--border); }
+    .page-hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 6vw, 72px); font-weight: 300; color: var(--cream); margin-bottom: 16px; line-height: 1.1; }
+    .page-hero p { font-size: 16px; color: var(--text-2); line-height: 1.8; max-width: 600px; }
+
+    /* SERVICES FULL */
+    .services-full { padding: 80px clamp(20px, 8vw, 120px); }
+    .service-full-item { display: grid; grid-template-columns: 80px 1fr 1fr; gap: 40px; padding: 48px 0; border-bottom: 1px solid var(--border); transition: all var(--transition); }
+    .service-full-item:last-child { border-bottom: none; }
+    .sfi-num { font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300; color: var(--text-3); line-height: 1; transition: color var(--transition); }
+    .service-full-item:hover .sfi-num { color: var(--gold); }
+    .sfi-hindi { font-size: 14px; color: var(--text-3); margin-bottom: 6px; }
+    .sfi-title { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 400; color: var(--cream); margin-bottom: 10px; }
+    .sfi-duration { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gold); background: var(--gold-dim); padding: 4px 12px; border-radius: 100px; border: 1px solid var(--border-2); }
+    .sfi-desc { font-size: 15px; line-height: 1.8; color: var(--text-2); margin-bottom: 24px; }
+    .sfi-includes { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px; }
+    .sfi-includes li { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-2); }
+    .sfi-includes li::before { content: '✦'; font-size: 8px; color: var(--gold); flex-shrink: 0; }
+    .services-cta { padding: 80px clamp(20px, 8vw, 120px); background: var(--bg-2); text-align: center; }
+    .services-cta h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(24px, 4vw, 44px); font-weight: 300; color: var(--cream); margin-bottom: 32px; }
+
+    /* ABOUT */
+    .about-hero { padding: calc(var(--nav-h) + 80px) clamp(20px, 8vw, 120px) 100px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 80px; align-items: center; border-bottom: 1px solid var(--border); }
+    .about-content h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 64px); font-weight: 300; color: var(--cream); margin-bottom: 24px; line-height: 1.1; }
+    .about-content p { font-size: 15px; line-height: 1.9; color: var(--text-2); margin-bottom: 16px; }
+    .about-visual { position: relative; display: flex; flex-direction: column; gap: 16px; }
+    .about-stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 28px; display: flex; align-items: center; gap: 20px; transition: all var(--transition); }
+    .about-stat-card:hover { border-color: var(--border-2); background: var(--surface-2); }
+    .asc-icon { width: 44px; height: 44px; background: var(--gold-dim); border: 1px solid var(--border-2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .asc-value { font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold-2); font-weight: 500; line-height: 1; }
+    .asc-label { font-size: 12px; color: var(--text-3); margin-top: 3px; }
+    .principles { padding: 100px clamp(20px, 8vw, 120px); background: var(--bg-2); }
+    .principles h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 4vw, 48px); font-weight: 300; color: var(--cream); margin-bottom: 56px; }
+    .principles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 2px; }
+    .principle-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; transition: all var(--transition); }
+    .principle-card:hover { border-color: var(--border-2); background: var(--surface-2); transform: translateY(-2px); }
+    .pc-icon { font-size: 28px; margin-bottom: 16px; }
+    .pc-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--cream); margin-bottom: 10px; font-weight: 400; }
+    .pc-body { font-size: 13px; line-height: 1.7; color: var(--text-2); }
+
+    /* CONTACT */
+    .contact-page { padding: calc(var(--nav-h) + 80px) clamp(20px, 8vw, 120px) 100px; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .contact-left h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 60px); font-weight: 300; color: var(--cream); line-height: 1.1; margin-bottom: 16px; }
+    .contact-left > p { font-size: 15px; line-height: 1.8; color: var(--text-2); margin-bottom: 48px; }
+    .contact-items { display: flex; flex-direction: column; gap: 2px; }
+    .contact-item { display: flex; gap: 20px; align-items: flex-start; padding: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); transition: all var(--transition); }
+    .contact-item:hover { border-color: var(--border-2); background: var(--surface-2); }
+    .ci-icon { width: 44px; height: 44px; background: var(--gold-dim); border: 1px solid var(--border-2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .ci-label { font-size: 11px; color: var(--text-3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 5px; }
+    .ci-value { font-size: 16px; color: var(--cream); font-family: 'Cormorant Garamond', serif; margin-bottom: 4px; }
+    .ci-sub { font-size: 13px; color: var(--text-2); line-height: 1.5; }
+    .contact-right h2 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; color: var(--cream); margin-bottom: 8px; }
+    .contact-right > p { font-size: 14px; color: var(--text-2); margin-bottom: 32px; line-height: 1.7; }
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 13px 16px; color: var(--text); font-family: 'Inter', sans-serif; font-size: 14px; outline: none; transition: border-color var(--transition), box-shadow var(--transition); appearance: none; }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(232,160,32,0.1); }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-group select { cursor: pointer; }
+    .form-group select option { background: var(--bg-3); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-submit { width: 100%; margin-top: 8px; padding: 15px; border: none; cursor: pointer; font-size: 15px; }
+    .form-note { font-size: 12px; color: var(--text-3); text-align: center; margin-top: 14px; line-height: 1.6; }
+
+    /* FOOTER */
+    footer { padding: 60px clamp(20px, 8vw, 120px) 36px; background: var(--bg); border-top: 1px solid var(--border); }
+    .footer-inner { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 60px; margin-bottom: 48px; }
+    .footer-brand .om { font-size: 28px; color: var(--gold); display: block; margin-bottom: 10px; text-shadow: 0 0 20px rgba(232,160,32,0.5); }
+    .footer-brand p { font-size: 13px; color: var(--text-3); line-height: 1.8; max-width: 280px; margin-bottom: 20px; }
+    .footer-phone { display: inline-flex; align-items: center; gap: 8px; font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--gold-2); text-decoration: none; transition: color var(--transition); }
+    .footer-phone:hover { color: var(--gold); }
+    .footer-col h4 { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a { font-size: 14px; color: var(--text-2); text-decoration: none; transition: color var(--transition); cursor: pointer; }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-3); }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; gap: 60px; }
+      .hero-visual { order: -1; }
+      .hero-mandala { width: 260px; }
+      .float-card-1 { top: -5%; right: 0; }
+      .float-card-2 { bottom: -5%; left: 0; }
+      .float-card-3 { display: none; }
+      .hero-stats { grid-template-columns: repeat(2,1fr); }
+      .mission { grid-template-columns: 1fr; }
+      .mission-visual { display: none; }
+      .about-hero { grid-template-columns: 1fr; }
+      .contact-page { grid-template-columns: 1fr; }
+      .service-full-item { grid-template-columns: 60px 1fr; }
+      .sfi-right { grid-column: 1 / -1; }
+      .sfi-includes { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; gap: 36px; }
+      .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+      .strip-header { flex-direction: column; align-items: flex-start; }
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+    }
+    @media (max-width: 600px) {
+      .hero { padding-top: calc(var(--nav-h) + 40px); }
+      .hero-actions { flex-direction: column; }
+      .hero-stats { grid-template-columns: repeat(2,1fr); gap: 20px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    .nav-open .nav-links { display: flex; flex-direction: column; position: fixed; top: var(--nav-h); left: 0; right: 0; background: rgba(10,8,6,0.98); backdrop-filter: blur(20px); padding: 20px; border-bottom: 1px solid var(--border); gap: 4px; }
+    .nav-open .nav-toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+    .nav-open .nav-toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+  </style>
+</head>
+<body>
+
+<nav id="main-nav">
+  <a class="nav-brand" onclick="navigate('home')">
+    <span class="om">ॐ</span>
+    <span class="brand-text">
+      <span class="brand-name">Pandit Parul</span>
+      <span class="brand-sub">Ghumarwin · Himachal Pradesh</span>
+    </span>
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a onclick="navigate('home')" data-page="home" class="active">Home</a></li>
+    <li><a onclick="navigate('services')" data-page="services">Services</a></li>
+    <li><a onclick="navigate('about')" data-page="about">About</a></li>
+    <li><a onclick="navigate('contact')" data-page="contact">Contact</a></li>
+  </ul>
+  <a href="tel:848493422" class="btn-book">📞 Book a Puja</a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow reveal"><span class="dot"></span>Ghumarwin · Himachal Pradesh</div>
+      <h1 class="hero-title reveal">Sacred rituals,<br/>performed the way<br/><em>the shastras intend.</em></h1>
+      <p class="hero-desc reveal">Pandit Parul conducts pujas, havan and sanskars for families across Himachal — every mantra recited correctly, every step explained in your own language.</p>
+      <div class="hero-actions reveal">
+        <a href="tel:848493422" class="btn-primary">📞 Call 84849 3422</a>
+        <button class="btn-ghost" onclick="navigate('services')">View all services →</button>
+      </div>
+      <div class="hero-stats reveal">
+        <div><div class="stat-value">18+</div><div class="stat-label">Years of seva</div></div>
+        <div><div class="stat-value">2,400+</div><div class="stat-label">Ceremonies</div></div>
+        <div><div class="stat-value">8</div><div class="stat-label">Specialities</div></div>
+        <div><div class="stat-value" style="font-size:18px;padding-top:6px">Hindi · Pahari</div><div class="stat-label">Explained in</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-mandala">
+        <div class="mandala-ring"></div>
+        <div class="mandala-ring"></div>
+        <div class="mandala-ring"></div>
+        <div class="mandala-ring"></div>
+        <div class="mandala-center">
+          <span class="mandala-om">ॐ</span>
+          <span class="mandala-label">Pandit Parul</span>
+        </div>
+      </div>
+      <div class="float-card float-card-1"><div class="fc-label">Ceremonies performed</div><div class="fc-value">2,400+</div></div>
+      <div class="float-card float-card-2"><div class="fc-label">Years of practice</div><div class="fc-value">18+</div></div>
+      <div class="float-card float-card-3"><div class="fc-label">Available</div><div class="fc-value">6 AM – 9 PM</div></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="services-strip">
+    <div class="strip-header">
+      <div>
+        <div class="section-label reveal">Services</div>
+        <h2 class="strip-title reveal">Eight sacred<br/>specialities</h2>
+      </div>
+      <button class="btn-ghost reveal" onclick="navigate('services')">All eight →</button>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal" onclick="navigate('services')"><div class="sc-num">01</div><div class="sc-hindi">गृह प्रवेश</div><div class="sc-title">Griha Pravesh</div><div class="sc-desc">Housewarming ceremony to purify a new home, invoke Vastu Purush and settle auspicious energies.</div><div class="sc-duration">3–4 hours</div></div>
+      <div class="service-card reveal" onclick="navigate('services')"><div class="sc-num">02</div><div class="sc-hindi">सत्यनारायण कथा</div><div class="sc-title">Satyanarayan Katha</div><div class="sc-desc">The complete five-chapter katha with sankalp, puja and prasad distribution.</div><div class="sc-duration">2–3 hours</div></div>
+      <div class="service-card reveal" onclick="navigate('services')"><div class="sc-num">03</div><div class="sc-hindi">विवाह संस्कार</div><div class="sc-title">Vivah Sanskar</div><div class="sc-desc">Traditional Hindu wedding conducted with every step explained, from mandap puja to saptapadi.</div><div class="sc-duration">Full day</div></div>
+      <div class="service-card reveal" onclick="navigate('services')"><div class="sc-num">04</div><div class="sc-hindi">नामकरण संस्कार</div><div class="sc-title">Namkaran Sanskar</div><div class="sc-desc">Naming ceremony for the newborn with nakshatra-based syllable guidance and blessings.</div><div class="sc-duration">1–2 hours</div></div>
+      <div class="service-card reveal" onclick="navigate('services')"><div class="sc-num">05</div><div class="sc-hindi">हवन एवं यज्ञ</div><div class="sc-title">Havan &amp; Yagna</div><div class="sc-desc">Fire rituals for peace, prosperity and removal of doshas — from ghar havan to Navagraha shanti.</div><div class="sc-duration">2–5 hours</div></div>
+      <div class="service-card reveal" onclick="navigate('services')"><div class="sc-num">06</div><div class="sc-hindi">कुंडली एवं ज्योतिष</div><div class="sc-title">Kundli &amp; Jyotish</div><div class="sc-desc">Birth-chart reading, muhurat selection, and shastra-rooted remedies.</div><div class="sc-duration">45–60 min</div></div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+  <section class="quote-band">
+    <div class="quote-sanskrit reveal">"सर्वे भवन्तु सुखिनः, सर्वे सन्तु निरामयाः"</div>
+    <div class="quote-translation reveal">May all be happy, may all be free from illness.</div>
+  </section>
+  <div class="divider"></div>
+
+  <section class="mission">
+    <div class="mission-visual reveal">
+      <div class="mission-img-wrap">
+        <span class="mission-img-om">ॐ</span>
+        <div class="mission-badge">
+          <div class="badge-num">2,400+</div>
+          <div class="badge-label">Ceremonies completed</div>
+        </div>
+      </div>
+    </div>
+    <div class="mission-content">
+      <div class="section-label reveal">Bhakti at home</div>
+      <h2 class="mission-title reveal">Devotion kept simple, joyful and unhurried.</h2>
+      <p class="mission-body reveal">Every puja is arranged so that children, elders and guests can all take part — the chants sung together, the meaning shared, the prasad offered with laughter.</p>
+      <button class="btn-ghost reveal" onclick="navigate('about')">About Pandit Parul →</button>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <h2 class="reveal">Planning a ceremony?<br/><em style="color:var(--gold-2)">Let's find the right muhurat.</em></h2>
+    <div class="cta-actions">
+      <a href="tel:848493422" class="btn-primary">📞 Call 84849 3422</a>
+      <button class="btn-ghost" onclick="navigate('contact')">Get in touch →</button>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand"><span class="om">ॐ</span><p>Vedic rituals performed with shastra-sammat precision in Ghumarwin and across Himachal Pradesh.</p><a href="tel:848493422" class="footer-phone">+91 84849 3422</a></div>
+      <div class="footer-col"><h4>Services</h4><ul><li><a onclick="navigate('services')">Griha Pravesh</a></li><li><a onclick="navigate('services')">Satyanarayan Katha</a></li><li><a onclick="navigate('services')">Vivah Sanskar</a></li><li><a onclick="navigate('services')">Havan &amp; Yagna</a></li><li><a onclick="navigate('services')">Kundli &amp; Jyotish</a></li></ul></div>
+      <div class="footer-col"><h4>Information</h4><ul><li><a onclick="navigate('about')">About Pandit Parul</a></li><li><a onclick="navigate('contact')">Book a ceremony</a></li><li><a href="tel:848493422">Call 84849 3422</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Pandit Parul — Ghumarwin, Bilaspur, Himachal Pradesh</span><span>Calls 6 AM – 9 PM · Daily</span></div>
+  </footer>
+</div>
+
+<!-- SERVICES -->
+<div class="page" id="page-services">
+  <div class="page-hero">
+    <div class="section-label reveal">What we perform</div>
+    <h1 class="reveal">Services &amp; Sanskars</h1>
+    <p class="reveal">Every ceremony includes samagri guidance, muhurat selection and a clear explanation of each step — so the family understands what is being offered and why.</p>
+  </div>
+  <div class="services-full">
+    <div class="service-full-item reveal"><div class="sfi-num">01</div><div class="sfi-left"><div class="sfi-hindi">गृह प्रवेश</div><div class="sfi-title">Griha Pravesh</div><div class="sfi-duration">◷ 3–4 hours</div></div><div class="sfi-right"><p class="sfi-desc">Housewarming ceremony to purify a new home, invoke Vastu Purush and settle auspicious energies before the family moves in.</p><ul class="sfi-includes"><li>Vastu shanti &amp; navagraha puja</li><li>Kalash sthapana</li><li>Havan and purnahuti</li><li>Muhurat selection</li></ul></div></div>
+    <div class="service-full-item reveal"><div class="sfi-num">02</div><div class="sfi-left"><div class="sfi-hindi">सत्यनारायण कथा</div><div class="sfi-title">Satyanarayan Katha</div><div class="sfi-duration">◷ 2–3 hours</div></div><div class="sfi-right"><p class="sfi-desc">The complete five-chapter katha with sankalp, puja and prasad distribution — performed for gratitude, vows fulfilled and family wellbeing.</p><ul class="sfi-includes"><li>Sankalp &amp; ganesh pujan</li><li>Five adhyaya recitation</li><li>Aarti &amp; prasad vidhi</li><li>Panchamrit preparation</li></ul></div></div>
+    <div class="service-full-item reveal"><div class="sfi-num">03</div><div class="sfi-left"><div class="sfi-hindi">विवाह संस्कार</div><div class="sfi-title">Vivah Sanskar</div><div class="sfi-duration">◷ Full day</div></div><div class="sfi-right"><p class="sfi-desc">Traditional Hindu wedding conducted with every step explained to the couple and families, from mandap puja to the saptapadi.</p><ul class="sfi-includes"><li>Ganesh &amp; matri pujan</li><li>Kanyadaan and panigrahan</li><li>Saptapadi with meanings</li><li>Kundli milan on request</li></ul></div></div>
+    <div class="service-full-item reveal"><div class="sfi-num">04</div><div class="sfi-left"><div class="sfi-hindi">नामकरण संस्कार</div><div class="sfi-title">Namkaran Sanskar</div><div class="sfi-duration">◷ 1–2 hours</div></div><div class="sfi-right"><p class="sfi-desc">Naming ceremony for the newborn, with nakshatra-based syllable guidance and blessings for a long, healthy life.</p><ul class="sfi-includes"><li>Nakshatra &amp; rashi calculation</li><li>Suggested name syllables</li><li>Surya darshan vidhi</li><li>Blessing havan</li></ul></div></div>
+    <div class="service-full-item reveal"><div class="sfi-num">05</div><div class="sfi-left"><div class="sfi-hindi">हवन एवं यज्ञ</div><div class="sfi-title">Havan &amp; Yagna</div><div class="sfi-duration">◷ 2–5 hours</div></div><div class="sfi-right"><p class="sfi-desc">Fire rituals for peace, prosperity and removal of doshas — from a simple ghar havan to Rudrabhishek and Navagraha shanti.</p><ul class="sfi-includes"><li>Rudrabhishek</li><li>Navagraha shanti</li><li>Mahamrityunjaya jaap</li><li>Sundarkand path</li></ul></div></div>
+    <div class="service-full-item reveal"><div class="sfi-num">06</div><div class="sfi-left"><div class="sfi-hindi">कुंडली एवं ज्योतिष</div><div class="sfi-title">Kundli &amp; Jyotish</div><div class="sfi-duration">◷ 45–60 min</div></div><div class="sfi-right"><p class="sfi-desc">Birth-chart preparation and reading, muhurat selection for important events, and practical remedies rooted in the shastras.</p><ul class="sfi-includes"><li>Janam kundli making</li><li>Kundli milan</li><li>Muhurat for events</li><li>Dosha upay &amp; remedies</li></ul></div></div>
+    <div class="service-full-item reveal"><div class="sfi-num">07</div><div class="sfi-left"><div class="sfi-hindi">श्राद्ध एवं पितृ कार्य</div><div class="sfi-title">Shraddh &amp; Pitra Karya</div><div class="sfi-duration">◷ 2–4 hours</div></div><div class="sfi-right"><p class="sfi-desc">Ancestral rites performed with dignity — shraddh, tarpan and pind daan observed according to family tradition.</p><ul class="sfi-includes"><li>Tarpan &amp; pind daan</li><li>Shraddh on tithi</li><li>Pitra dosha nivaran</li><li>Antim sanskar guidance</li></ul></div></div>
+    <div class="service-full-item reveal"><div class="sfi-num">08</div><div class="sfi-left"><div class="sfi-hindi">मुंडन संस्कार</div><div class="sfi-title">Mundan Sanskar</div><div class="sfi-duration">◷ 1–2 hours</div></div><div class="sfi-right"><p class="sfi-desc">The first tonsure ceremony, performed on an auspicious day with the accompanying puja and blessings for the child.</p><ul class="sfi-includes"><li>Muhurat selection</li><li>Ganesh &amp; kul devta pujan</li><li>Chudakarma vidhi</li><li>Prasad &amp; aarti</li></ul></div></div>
+  </div>
+  <div class="services-cta">
+    <h2 class="reveal">Ready to book a ceremony?</h2>
+    <div class="cta-actions">
+      <a href="tel:848493422" class="btn-primary">📞 Call to book</a>
+      <button class="btn-ghost" onclick="navigate('contact')">Send an enquiry →</button>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand"><span class="om">ॐ</span><p>Vedic rituals performed with shastra-sammat precision in Ghumarwin and across Himachal Pradesh.</p><a href="tel:848493422" class="footer-phone">+91 84849 3422</a></div>
+      <div class="footer-col"><h4>Quick Links</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('about')">About</a></li><li><a onclick="navigate('contact')">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:848493422">+91 84849 3422</a></li><li><a>Ghumarwin, Bilaspur, HP</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Pandit Parul — Ghumarwin, Bilaspur, Himachal Pradesh</span><span>Calls 6 AM – 9 PM · Daily</span></div>
+  </footer>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <section class="about-hero">
+    <div class="about-content">
+      <div class="section-label reveal">About the pandit</div>
+      <h1 class="reveal">Pandit Parul</h1>
+      <p class="reveal">Trained in the guru-shishya tradition and rooted in the Karmakand school, Pandit Parul has spent more than eighteen years performing Vedic ceremonies for families in Ghumarwin and the wider Bilaspur region.</p>
+      <p class="reveal">The approach is simple: the ritual is done correctly, and the family understands it. Sankalp, mantra and offering are explained in Hindi and Pahari, so a ceremony becomes something a household participates in rather than watches.</p>
+      <p class="reveal">From a newborn's namkaran to a home's griha pravesh, from weddings to ancestral rites, each occasion is prepared for individually — the panchang consulted, the muhurat fixed, the samagri listed well before the day.</p>
+    </div>
+    <div class="about-visual reveal">
+      <div class="about-stat-card"><div class="asc-icon">✦</div><div><div class="asc-value">18+</div><div class="asc-label">Years of Vedic practice</div></div></div>
+      <div class="about-stat-card"><div class="asc-icon">ॐ</div><div><div class="asc-value">2,400+</div><div class="asc-label">Ceremonies performed</div></div></div>
+      <div class="about-stat-card"><div class="asc-icon">🙏</div><div><div class="asc-value">8</div><div class="asc-label">Ritual specialities</div></div></div>
+      <div class="about-stat-card"><div class="asc-icon">💬</div><div><div class="asc-value" style="font-size:18px;padding-top:4px">Hindi · Pahari</div><div class="asc-label">Explained in</div></div></div>
+    </div>
+  </section>
+  <section class="principles">
+    <div class="section-label reveal">How every ceremony is conducted</div>
+    <h2 class="reveal">Four commitments<br/>to every family</h2>
+    <div class="principles-grid">
+      <div class="principle-card reveal"><div class="pc-icon">📖</div><div class="pc-title">Shastra-sammat</div><p class="pc-body">Each ritual follows the vidhi prescribed in the texts — no shortcuts, no improvised steps.</p></div>
+      <div class="principle-card reveal"><div class="pc-icon">🗣️</div><div class="pc-title">Explained, not recited</div><p class="pc-body">Mantras are translated as we go, so the family knows the meaning of every sankalp they make.</p></div>
+      <div class="principle-card reveal"><div class="pc-icon">🌿</div><div class="pc-title">Samagri arranged</div><p class="pc-body">A written list is shared in advance, and complete samagri can be arranged on request.</p></div>
+      <div class="principle-card reveal"><div class="pc-icon">🕐</div><div class="pc-title">Punctual muhurat</div><p class="pc-body">The auspicious timing is calculated first, and the ceremony begins exactly on it.</p></div>
+    </div>
+  </section>
+  <section class="cta-band">
+    <h2 class="reveal">Ready to plan your ceremony?</h2>
+    <div class="cta-actions">
+      <a href="tel:848493422" class="btn-primary">📞 Call 84849 3422</a>
+      <button class="btn-ghost" onclick="navigate('contact')">Get in touch →</button>
+    </div>
+  </section>
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand"><span class="om">ॐ</span><p>Vedic rituals performed with shastra-sammat precision in Ghumarwin and across Himachal Pradesh.</p><a href="tel:848493422" class="footer-phone">+91 84849 3422</a></div>
+      <div class="footer-col"><h4>Quick Links</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('contact')">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:848493422">+91 84849 3422</a></li><li><a>Ghumarwin, Bilaspur, HP</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Pandit Parul — Ghumarwin, Bilaspur, Himachal Pradesh</span><span>Calls 6 AM – 9 PM · Daily</span></div>
+  </footer>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+  <div class="contact-page">
+    <div class="contact-left">
+      <div class="section-label reveal">Get in touch</div>
+      <h1 class="reveal">Book a ceremony</h1>
+      <p class="reveal">Share the occasion and your preferred dates. The muhurat is confirmed after checking the panchang, and a samagri list follows the same day.</p>
+      <div class="contact-items">
+        <div class="contact-item reveal"><div class="ci-icon">📞</div><div><div class="ci-label">Phone</div><div class="ci-value">+91 84849 3422</div><div class="ci-sub">Calls 6 AM – 9 PM, daily</div></div></div>
+        <div class="contact-item reveal"><div class="ci-icon">📍</div><div><div class="ci-label">Based in</div><div class="ci-value">Ghumarwin, Bilaspur</div><div class="ci-sub">Himachal Pradesh</div></div></div>
+        <div class="contact-item reveal"><div class="ci-icon">🚗</div><div><div class="ci-label">Travels to</div><div class="ci-value">Bilaspur, Hamirpur, Una, Mandi, Shimla</div><div class="ci-sub">Outstation ceremonies on prior arrangement</div></div></div>
+        <div class="contact-item reveal"><div class="ci-icon">🕐</div><div><div class="ci-label">Hours</div><div class="ci-value">6 AM – 9 PM, Daily</div><div class="ci-sub">Ceremonies as per muhurat</div></div></div>
+      </div>
+    </div>
+    <div class="contact-right reveal">
+      <h2>Send an enquiry</h2>
+      <p>Fill in the details and Pandit Parul will call you back to confirm dates and muhurat.</p>
+      <form id="enquiry-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group"><label for="fname">First name</label><input type="text" id="fname" placeholder="Your name" required /></div>
+          <div class="form-group"><label for="fphone">Phone number</label><input type="tel" id="fphone" placeholder="+91 00000 00000" required /></div>
+        </div>
+        <div class="form-group"><label for="ceremony">Ceremony type</label>
+          <select id="ceremony" required>
+            <option value="" disabled selected>Select a service</option>
+            <option>Griha Pravesh</option><option>Satyanarayan Katha</option><option>Vivah Sanskar</option><option>Namkaran Sanskar</option><option>Havan &amp; Yagna</option><option>Kundli &amp; Jyotish</option><option>Shraddh &amp; Pitra Karya</option><option>Mundan Sanskar</option><option>Other / Unsure</option>
+          </select>
+        </div>
+        <div class="form-group"><label for="datepref">Preferred date / month</label><input type="text" id="datepref" placeholder="e.g. October 2026 or flexible" /></div>
+        <div class="form-group"><label for="message">Additional details</label><textarea id="message" placeholder="Occasion, location, number of guests, etc."></textarea></div>
+        <button type="submit" class="btn-primary form-submit">Send Enquiry →</button>
+        <p class="form-note">Your details are only used to arrange your ceremony. No spam, ever.</p>
+      </form>
+      <div id="form-success" style="display:none; text-align:center; padding:40px 20px;">
+        <div style="font-size:48px; margin-bottom:16px;">🙏</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:24px; color:var(--cream); margin-bottom:10px;">Thank you for reaching out</div>
+        <div style="font-size:14px; color:var(--text-2); line-height:1.7;">Pandit Parul will call you back to confirm your ceremony and muhurat. You can also call directly at <a href="tel:848493422" style="color:var(--gold)">+91 84849 3422</a>.</div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand"><span class="om">ॐ</span><p>Vedic rituals performed with shastra-sammat precision in Ghumarwin and across Himachal Pradesh.</p><a href="tel:848493422" class="footer-phone">+91 84849 3422</a></div>
+      <div class="footer-col"><h4>Quick Links</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('services')">Services</a></li><li><a onclick="navigate('about')">About</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:848493422">+91 84849 3422</a></li><li><a>Ghumarwin, Bilaspur, HP</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 Pandit Parul — Ghumarwin, Bilaspur, Himachal Pradesh</span><span>Calls 6 AM – 9 PM · Daily</span></div>
+  </footer>
+</div>
+
+<script>
+  function navigate(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    document.querySelectorAll('[data-page]').forEach(a => a.classList.toggle('active', a.dataset.page === page));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.body.classList.remove('nav-open');
+    setTimeout(initReveal, 60);
+  }
+
+  function initReveal() {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.page.active .reveal').forEach((el, i) => {
+      if (!el.classList.contains('visible')) {
+        el.style.transitionDelay = Math.min(i * 0.06, 0.5) + 's';
+        io.observe(el);
+      }
+    });
+  }
+
+  window.addEventListener('scroll', () => {
+    document.getElementById('main-nav').style.background = window.scrollY > 20 ? 'rgba(10,8,6,0.97)' : 'rgba(10,8,6,0.85)';
+  }, { passive: true });
+
+  document.getElementById('nav-toggle').addEventListener('click', () => document.body.classList.toggle('nav-open'));
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    document.getElementById('enquiry-form').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  }
+
+  initReveal();
+</script>
+</body>
+</html>
